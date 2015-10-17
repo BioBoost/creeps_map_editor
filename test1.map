@@ -2,6 +2,7 @@
   id: 0
   description: The kitchen on the first floor
   [connection]
+    description: Door in the corner standing wide open. It seems to lead to the cellar.
     instruction: door
     room: 1
   [/connection]
@@ -11,10 +12,12 @@
   id: 1
   description: A dark wine cellar
   [connection]
+    description: Door leading to the kitchen.
     instruction: door
     room: 0
   [/connection]
   [connection]
+    description: Window just big enough to fit through.
     instruction: window
     room: 2
   [/connection]
@@ -24,6 +27,7 @@
   id: 2
   description: The backyard
   [connection]
+    description: Window which leads to the cellar. It may be just big enough to fit through.
     instruction: window
     room: 1
   [/connection]
