@@ -1,0 +1,30 @@
+[room]
+  id 0
+  description The kitchen on the first floor
+  [connection]
+    instruction door
+    room 1
+  [/connection]
+[/room]
+
+[room]
+  id 1
+  description A dark wine cellar
+  [connection]
+    instruction door
+    room 0
+  [/connection]
+  [connection]
+    instruction window
+    room 2
+  [/connection]
+[/room]
+
+[room]
+  id 2
+  description The backyard
+  [connection]
+    instruction window
+    room 1
+  [/connection]
+[/room]
