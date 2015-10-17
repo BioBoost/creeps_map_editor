@@ -1,5 +1,5 @@
 class Connection
-  attr_accessor :left_id, :right_id, :left, :right, :left_description, :right_description, :left_instruction, :right_instruction
+  attr_accessor :left_id, :right_id, :left_description, :right_description, :left_instruction, :right_instruction
 
   def initialize
     @left_id = -1

@@ -55,4 +55,33 @@ class TestMapParser < Test::Unit::TestCase
     assert_equal('Door in the corner standing wide open. It seems to lead to the cellar.', conn.right_description)
   end
  
+  def test_room_parse_no_connections
+    r = "[room]
+            id: 1
+            description: A dark wine cellar
+          [/room]"
+
+    room = Room.new
+    parser = MapParser.new
+    connections = Array.new
+
+    parser.parseRoom(r, room, connections)
+    assert_equal(1, room.id)
+    assert_equal('A dark wine cellar', room.description)
+    assert_equal(0, room.connections.size)
+    assert_equal(0, connections.size)
+  end
+ 
+  def test_room_parse_missing_options
+    r = "[room]
+            id: 1
+          [/room]"
+
+    room = Room.new
+    parser = MapParser.new
+    connections = Array.new
+
+    assert_raise(RuntimeError) { parser.parseRoom(r, room, connections) }
+  end
+ 
 end
