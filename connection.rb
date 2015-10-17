@@ -29,7 +29,9 @@ class Connection
   end
 
   def to_s
-    result = "left: #{@left_id} => [#{@left_instruction}] #{@left_description}"
-    result += "right: #{@right_id} => [#{@right_instruction}] #{@right_description}"
+    result = "=====================================================================\r\n"
+    result += "left: #{@left_id} => [#{@left_instruction}] #{@left_description}\r\n"
+    result += "right: #{@right_id} => [#{@right_instruction}] #{@right_description}\r\n"
+    result += "=====================================================================\r\n"
   end
 end

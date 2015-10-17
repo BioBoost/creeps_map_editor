@@ -8,6 +8,6 @@ class Room
 
   def to_s
     result = "[#{@id}] #{@description} \r\n"
-    result += "It has following connections: #{connections.join(' ')}\r\n"
+    result += "It has following connections:\r\n#{connections.join}\r\n"
   end
 end

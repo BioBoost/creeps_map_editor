@@ -1,7 +1,24 @@
 require_relative "room"
 require_relative "connection"
+require 'pry'
 
 class MapParser
+
+  def parseMap(file, rooms, connections)
+    room_block = ""
+    File.open(file, "r") do |f|
+      f.each_line do |line|
+        room_block += line
+        if line.strip == "[/room]"
+          # Parse block
+          room = Room.new
+          parseRoom(room_block, room, connections)
+          rooms << room
+          room_block = ""
+        end
+      end
+    end
+  end
 
   # [connection]
   #   description: Door in the corner standing wide open. It seems to lead to the cellar.
@@ -36,8 +53,12 @@ class MapParser
   #
   # connections is list of connections that already exist
   def parseRoom(string, room, connections)
-    # First we extract the connections if there are any
-    connection_strings = string.match(/(\[connection\].*?\[\/connection\])/m)
+    # First we extract the connections options if there are any
+    connections_strings = string.scan(/(\[connection\].*?\[\/connection\])/m).flatten(1)
+
+    if !connections_strings.nil?
+      connections_options = connections_strings.map { |s| parseOptions(s, 'connection') }
+    end
 
     # Then we remove the connections so we can parse the rest
     # Note how we use a non-greedy sub
@@ -53,6 +74,55 @@ class MapParser
 
     room.id = room_options['id'].to_i
     room.description = room_options['description']
+
+    if !connections_strings.nil?
+      # Now we need to check each new connection if it doesnt already exist
+      connections_options.each do |co|
+        # Sanity check
+        if (!(co.has_key?('room') && co.has_key?('description') && co.has_key?('instruction')))
+          raise "Missing options for connection: #{co.inspect}"
+        end
+
+        matches = connections.select do |c|
+          # puts "#{c.left_id} == #{co['room'].to_i} && #{c.right_id} == #{room.id}"
+          #(c.left_id == co['id'].to_i && c.right_id == room.id) || (c.left_id == room.id && c.right_id == co['id'].to_i)
+          (c.left_id == co['room'].to_i) && (c.right_id == room.id)
+        end
+
+        # binding.pry
+
+        # puts "Matches: " + matches.inspect
+
+        if matches.size == 0
+          # No matches found yet so the current connection doesnt exist yet
+          connection = Connection.new
+
+          connection.setLeft(room.id, co['description'], co['instruction'])
+          connection.right_id = co['room'].to_i    # Set other id
+          room.connections << connection
+
+          # Add new connection to list of connections
+          connections << connection
+
+        elsif matches.size == 1
+          connection = matches.first
+          # puts 'Found match: ' + connection.inspect
+
+          # Sanity check
+          if (!connection.right_description.nil? || !connection.right_instruction.nil?)
+            raise "Existing connection already has right side info set."
+          end
+
+          # Connection already exist, just need to set right params
+          connection.setRight(room.id, co['description'], co['instruction'])
+
+          # And add it to current room
+          room.connections << connection
+        else
+          raise "Should not find multiple matches for existing connection"
+        end
+      end
+    end
 
     return room
   end
