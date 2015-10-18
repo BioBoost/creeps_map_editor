@@ -10,4 +10,8 @@ class Room
     result = "[#{@id}] #{@description} \r\n"
     result += "It has following connections:\r\n#{connections.join}\r\n"
   end
+
+  def to_cpp
+    "Room room_#{@id}(\"#{@description}\");"
+  end
 end

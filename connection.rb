@@ -34,4 +34,15 @@ class Connection
     result += "right: #{@right_id} => [#{@right_instruction}] #{@right_description}\r\n"
     result += "=====================================================================\r\n"
   end
+
+  def to_cpp
+    connectionname = "from_room_#{@left_id}_to_room_#{@right_id}"
+
+    result = "Connection #{connectionname}"
+    result += "(&room_#{@left_id}, \"#{@left_description}\", \"#{@left_instruction}\", "
+    result += "&room_#{@right_id}, \"#{@right_description}\", \"#{@right_instruction}\");\r\n\r\n"
+
+    result += "room_#{@left_id}.addConnection(&#{connectionname});\r\n"
+    result += "room_#{@right_id}.addConnection(&#{connectionname});\r\n"
+  end
 end
