@@ -21,14 +21,44 @@
     instruction: window
     room: 2
   [/connection]
+  [connection]
+    description: There seems to be a hatch in the floor. A room below the cellar ?
+    instruction: hatch
+    room: 3
+  [/connection]
 [/room]
 
 [room]
   id: 2
-  description: The backyard
+  description: The backyard. Nice and quiet here. Maybe a little to quiet.
   [connection]
     description: Window which leads to the cellar. It may be just big enough to fit through.
     instruction: window
     room: 1
+  [/connection]
+  [connection]
+    description: Porch at the left side of the yard.
+    instruction: porch
+    room: 4
+  [/connection]
+[/room]
+
+[room]
+  id: 3
+  description: A dark and musty room below the cellar.
+  [connection]
+    description: A ladder leading to a hatch in the ceiling.
+    instruction: ladder
+    room: 1
+  [/connection]
+[/room]
+
+[room]
+  id: 4
+  description: A backalley running behind the house.
+  [connection]
+    description: A porch leading into the backyard of the house. Hmm someone forced the lock from the outside.
+    instruction: porch
+    room: 2
   [/connection]
 [/room]
